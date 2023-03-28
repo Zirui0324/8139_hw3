@@ -1,6 +1,7 @@
 ---
-title: "8139_hw3"
-output: html_document
+title: "HW3"
+author: "Zirui Zhang"
+output: pdf_document
 date: "2023-03-27"
 ---
 ```{r message=FALSE}
