@@ -1,0 +1,66 @@
+---
+title: "8139_hw3"
+output: html_document
+date: "2023-03-27"
+---
+```{r}
+library(dplyr)
+library(formattable)
+```
+
+
+### QUESTION 1
+```{r}
+mydata = read.table(file="./PCA_data.csv", header=TRUE, row.names=1, sep=",")
+mydata.pca = prcomp(mydata, retx=TRUE, center=TRUE, scale=TRUE)
+# variable means set to zero, and variances set to one "scale=TRUE"
+# PCA scores for each sample store in mydata.pca$x
+# loadings stored in mydata.pca$rotation
+# square roots of eigenvalues store in mydata.pca$sdev (note that eigenvalues are variances of principal compoments)
+# variable means stored in mydata.pca$center
+# variable standard deviations stored in mydata.pca$scale
+sd = mydata.pca$sdev
+loadings = mydata.pca$rotation
+rownames(loadings) = colnames(mydata)
+scores = mydata.pca$x
+plot(scores[,1:2],
+     xlim=c(min(scores[,1:2]),max(scores[,1:2])),
+     ylim=c(min(scores[,1:2]),max(scores[,1:2])))
+text(scores[,1], scores[,2], rownames(scores), col="blue", cex=0.7, pos=3)
+screeplot(mydata.pca, type="lines")
+```
+
+#### a)
+
+Calculate PCA scores using loadings and original math/chem/bio scores, and compare to output PCA scores from the R package prcomp.
+```{r}
+# calculate PCA scores
+mydata_2 = 
+  mydata%>% 
+  mutate(math = scale(math) - mean(scale(math)),
+         bio = scale(bio) - mean(scale(bio)),
+         chem = scale(chem) - mean(scale(chem)))
+scores_2 = as.matrix(mydata_2)%*%loadings
+scores_2
+# compare with the results from package
+abs(scores_2-scores)/scores
+```
+
+
+#### b) 
+
+Calculate percent variance explained of each component.
+```{r}
+lamda = percent(mydata.pca$sdev^2/sum(mydata.pca$sdev^2))
+lamda
+```
+
+The variance explained by PC1 is 66.93%, by PC2 is 29.71%, by PC3 is 3.36%.
+
+#### c) 
+
+Plot i) PC1 vs PC2, ii) PC1 vs PC3, and iii) PC2 vs. PC3.
+```{r}
+
+```
+
