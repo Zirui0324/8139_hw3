@@ -41,7 +41,7 @@ scores_2
 # compare with the results from package
 abs(scores_2-scores)/scores
 ```
-
+The difference between the two PCA scores are rather small.
 
 #### b) 
 
